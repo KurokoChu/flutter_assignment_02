@@ -25,31 +25,27 @@ class _MenuState extends State<MenuBar> with SingleTickerProviderStateMixin {
 
   int currentTabIndex = 0;
   List<Widget> pages;
-  TaskScreen one;
-  TaskCompletedScreen two;
+  TaskScreen pageOne;
+  TaskCompletedScreen pageTwo;
   Widget currentPage;
   List actionButtons;
 
   static TodoProvider todo = TodoProvider();
-  List<Todo> tasks = [];
-  List<Todo> tasksCompleted = [];
 
   @override
   void initState() {
     super.initState();
 
-    one = TaskScreen(
+    pageOne = TaskScreen(
       key: keyOne,
-      tasks: tasks,
       todo: todo,
     );
-    two = TaskCompletedScreen(
+    pageTwo = TaskCompletedScreen(
       key: keyTwo,
-      tasksCompleted: tasksCompleted,
       todo: todo,
     );
-    pages = [one, two];
-    currentPage = one;
+    pages = [pageOne, pageTwo];
+    currentPage = pageOne;
   }
 
   @override
@@ -67,7 +63,7 @@ class _MenuState extends State<MenuBar> with SingleTickerProviderStateMixin {
       IconButton(
         icon: Icon(Icons.delete),
         onPressed: () {
-          two.state.deleteAll();
+          pageTwo.state.deleteAll();
         },
       ),
     ];
@@ -84,12 +80,6 @@ class _MenuState extends State<MenuBar> with SingleTickerProviderStateMixin {
       bottomNavigationBar: BottomNavigationBar(
         fixedColor: Theme.of(context).accentColor,
         currentIndex: currentTabIndex,
-        onTap: (int index) {
-          setState(() {
-            currentTabIndex = index;
-            currentPage = pages[index];
-          });
-        },
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
@@ -100,6 +90,12 @@ class _MenuState extends State<MenuBar> with SingleTickerProviderStateMixin {
             title: Text('Completed'),
           ),
         ],
+        onTap: (int index) {
+          setState(() {
+            currentTabIndex = index;
+            currentPage = pages[index];
+          });
+        },
       ),
     );
   }

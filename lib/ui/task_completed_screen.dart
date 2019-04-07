@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_assignment_02/models/todo.dart';
 
 class TaskCompletedScreen extends StatefulWidget {
-  final List<Todo> tasksCompleted;
   final TodoProvider todo;
+  List<Todo> tasksCompleted = [];
 
   TaskCompletedScreen({
     Key key,
-    @required this.tasksCompleted,
     @required this.todo,
   }) : super(key: key);
 
@@ -63,11 +62,21 @@ class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
                         },
                       )
                     : Center(
-                        child: Text("No data found.."),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text("No data found.."),
+                          ],
+                        ),
                       );
               } else {
                 return Center(
-                  child: Text("No data found.."),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text("No data found.."),
+                    ],
+                  ),
                 );
               }
             }),
@@ -76,6 +85,9 @@ class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
   }
 
   deleteAll() async {
+    if (widget.tasksCompleted.length == 0) {
+      return;
+    }
     for (var task in widget.tasksCompleted) {
       await widget.todo.delete(task.id);
     }

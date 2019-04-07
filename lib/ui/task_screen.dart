@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_assignment_02/models/todo.dart';
 
 class TaskScreen extends StatefulWidget {
-  final List<Todo> tasks;
   final TodoProvider todo;
+  List<Todo> tasks = [];
 
   TaskScreen({
     Key key,
-    @required this.tasks,
     @required this.todo,
   }) : super(key: key);
 
@@ -26,8 +25,8 @@ class _TaskScreenState extends State<TaskScreen> {
             future: widget.todo.getAllTodo(),
             builder:
                 (BuildContext context, AsyncSnapshot<List<Todo>> snapshot) {
+              widget.tasks.clear();
               if (snapshot.hasData) {
-                widget.tasks.clear();
                 for (var task in snapshot.data) {
                   if (task.done == false) {
                     widget.tasks.add(task);

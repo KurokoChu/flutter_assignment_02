@@ -18,22 +18,29 @@ class _NewSubjectScreenState extends State<NewSubjectScreen> {
   final _controller = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+
+    widget.todo.open("todo.db");
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("New Subject"),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Form(
-          key: _formkey,
+      body: Form(
+        key: _formkey,
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
           child: ListView(
             children: <Widget>[
               TextFormField(
+                  controller: _controller,
                   decoration: InputDecoration(
                     labelText: "Subject",
                   ),
-                  controller: _controller,
                   validator: (value) {
                     if (value.isEmpty) {
                       return "Please fill subject";
@@ -42,16 +49,9 @@ class _NewSubjectScreenState extends State<NewSubjectScreen> {
               RaisedButton(
                 child: Text("Save"),
                 onPressed: () async {
-                  _formkey.currentState.validate();
-                  if (_controller.text.length == 0) {
-                    return;
-                  } else {
-                    await widget.todo.open("todo.db");
-                    Todo data = Todo();
-                    data.title = _controller.text;
-                    data.done = false;
+                  if (_formkey.currentState.validate()) {
+                    Todo data = Todo(title: _controller.text);
                     await widget.todo.insert(data);
-                    _controller.text = "";
                     Navigator.pop(context);
                   }
                 },

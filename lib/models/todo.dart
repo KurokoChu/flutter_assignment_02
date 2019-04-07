@@ -10,7 +10,10 @@ class Todo {
   String title;
   bool done;
 
-  Todo();
+  Todo({String title}) {
+    this.title = title;
+    this.done = false;
+  }
 
   Todo.formMap(Map<String, dynamic> map) {
     this.id = map[columnId];
